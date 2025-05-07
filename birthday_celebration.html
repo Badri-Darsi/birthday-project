@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to right, #ff9a9e, #fad0c4);
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .balloon {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            border-radius: 50%;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateX(45deg) rotateY(45deg; /* Initial 3D perspective */
+            perspective: 500px; /* Adjust for perspective */
+        }
+
+        .balloon:hover {
+            transform: rotateX(45deg) rotateY(45deg) rotateZ(360deg);
+            transition: transform 1s ease; /* Smooth rotation on hover */
+        }
+
+        .balloon:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            width: 2px;
+            height: 20px;
+            background-color: #333;
+            transform: translateX(-50%);
+        }
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(-10px);
+            }
+            50% {
+                transform: translateY(10px);
+            }
+        }
+        .cake {
+            display: none;
+            margin: 50px auto;
+            width: 200px;
+            height: 200px;
+            background-image: url('https://example.com/3d-cake.png'); /* Replace with actual 3D cake image URL */
+            background-size: cover;
+            border-radius: 10px;
+            position: relative;
+        }
+        .candle {
+            width: 10px;
+            height: 30px;
+            background-image: url('https://example.com/3d-candle.png'); /* Replace with actual 3D candle image URL */
+            background-size: cover;
+            position: absolute;
+            top: -30px;
+        }
+        .flame {
+            width: 10px;
+            height: 10px;
+            background-image: url('https://example.com/3d-flame.png'); /* Replace with actual 3D flame image URL */
+            background-size: cover;
+            border-radius: 50%;
+            position: absolute;
+            top: -10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Happy Birthday!</h1>
+        <p>Enter the name of the birthday person and their age:</p>
+        <input type="text" id="name" placeholder="Enter name"><br><br>
+        <input type="number" id="age" placeholder="Enter age"><br><br>
+        <button onclick="startCelebration()">Start Celebration</button>
+
+        <div id="balloons"></div>
+        <div class="cake" id="cake"></div>
+    </div>
+
+    <script>
+        function startCelebration() {
+            const name = document.getElementById('name').value;
+            const age = parseInt(document.getElementById('age').value);
+
+            if (!name || isNaN(age) || age <= 0) {
+                alert('Please enter a valid name and age.');
+                return;
+            }
+
+            document.querySelector('h1').innerText = `Happy Birthday, ${name}!`;
+
+            const balloonsContainer = document.getElementById('balloons');
+            balloonsContainer.innerHTML = '';
+
+            for (let i = 0; i < age; i++) {
+                const balloon = document.createElement('div');
+                balloon.className = 'balloon';
+                balloon.onclick = function () {
+                    balloon.style.display = 'none';
+                    checkAllBalloonsPopped(age);
+                };
+                balloonsContainer.appendChild(balloon);
+            }
+        }
+
+        function checkAllBalloonsPopped(age) {
+            const remainingBalloons = document.querySelectorAll('.balloon:not([style*="display: none"])');
+            if (remainingBalloons.length === 0) {
+                showCake(age);
+            }
+        }
+
+        function showCake(age) {
+            const cake = document.getElementById('cake');
+            cake.innerHTML = '';
+            cake.style.display = 'block';
+
+            for (let i = 0; i < age; i++) {
+                const candle = document.createElement('div');
+                candle.className = 'candle';
+                candle.style.left = `${(i * 20) + 10}px`;
+
+                const flame = document.createElement('div');
+                flame.className = 'flame';
+                candle.appendChild(flame);
+
+                cake.appendChild(candle);
+            }
+        }
+    </script>
+</body>
+</html>
